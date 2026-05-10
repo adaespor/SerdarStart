@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="tr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Serdar Start v1.4</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%23f1dfc1'/%3E%3Ctext x='60' y='78' text-anchor='middle' font-size='70' font-family='Georgia,serif' fill='%239b6a2e'%3ES%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --sand-0: #fff8ee;
+      --sand-1: #f7ead6;
+      --sand-2: #ead3af;
+      --sand-3: #d2ad75;
+      --bronze: #a06d32;
+      --bronze-2: #7d5226;
+      --espresso: #2b2018;
+      --ink: #3a2a1e;
+      --muted: #806c57;
+      --card: rgba(255, 246, 231, .82);
+      --card-strong: rgba(255, 250, 240, .94);
+      --line: rgba(124, 83, 39, .16);
+      --shadow: 0 24px 52px rgba(65, 39, 14, .18), 0 7px 18px rgba(65, 39, 14, .11);
+      --small-shadow: 0 14px 28px rgba(78, 47, 17, .15), 0 3px 10px rgba(78, 47, 17, .12);
+      --radius: 26px;
+      --font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--sand-1); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-ui);
+      color: var(--ink);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.92), rgba(255,255,255,.18) 28%, rgba(255,255,255,0) 48%),
+        linear-gradient(180deg, rgba(251,236,209,.95), rgba(218,175,113,.68)),
+        var(--sand-1);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -3;
+      background:
+        radial-gradient(ellipse 115% 58% at 12% 94%, rgba(153, 98, 41, .42), rgba(153,98,41,0) 42%),
+        radial-gradient(ellipse 100% 55% at 85% 102%, rgba(202, 145, 72, .45), rgba(202,145,72,0) 45%),
+        radial-gradient(ellipse 90% 42% at 48% 105%, rgba(239, 196, 126, .72), rgba(239,196,126,0) 45%);
+      filter: blur(.2px);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      opacity: .8;
+      background:
+        linear-gradient(172deg, transparent 50%, rgba(174, 117, 55, .19) 50.4%, rgba(235,205,155,.2) 59%, transparent 59.4%),
+        linear-gradient(8deg, transparent 56%, rgba(139, 93, 44, .16) 56.3%, rgba(246, 219, 177, .22) 64%, transparent 64.3%),
+        repeating-linear-gradient(168deg, rgba(113, 71, 30, .035) 0 1px, transparent 1px 11px);
+      mask-image: linear-gradient(180deg, transparent 0, black 28%, black 100%);
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    a { color: inherit; text-decoration: none; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 74px 1fr;
+    }
+
+    .rail {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: linear-gradient(180deg, rgba(255,251,244,.82), rgba(242,222,190,.7));
+      border-right: 1px solid rgba(120, 80, 39, .13);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 26px 12px 20px;
+      gap: 20px;
+      box-shadow: 12px 0 30px rgba(79, 51, 24, .06);
+      z-index: 20;
+    }
+
+    .mark {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      color: var(--bronze);
+      font: 36px/1 var(--font-serif);
+      margin-bottom: 30px;
+    }
+
+    .nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      color: var(--bronze-2);
+      position: relative;
+      transition: .2s ease;
+    }
+    .nav-btn svg { width: 22px; height: 22px; }
+    .nav-btn.active, .nav-btn:hover {
+      background: rgba(171, 116, 53, .13);
+      box-shadow: inset 0 0 0 1px rgba(154, 102, 42, .15);
+    }
+    .nav-btn.active::after {
+      content: "";
+      position: absolute;
+      right: -15px;
+      width: 8px;
+      height: 24px;
+      border-radius: 999px 0 0 999px;
+      background: linear-gradient(180deg, #ce9a4d, #9a6328);
+    }
+    .rail-spacer { flex: 1; }
+    .tiny-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid var(--bronze-2);
+      opacity: .8;
+    }
+
+    .main {
+      padding: 38px clamp(18px, 4vw, 72px) 44px;
+    }
+
+    .topbar {
+      max-width: 1180px;
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .edit-pill, .ghost-pill, .solid-pill {
+      min-height: 42px;
+      padding: 0 15px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      background: rgba(255,249,238,.62);
+      border: 1px solid rgba(132,86,38,.18);
+      box-shadow: 0 8px 20px rgba(86,54,22,.08);
+      backdrop-filter: blur(14px);
+      transition: .2s ease;
+    }
+    .edit-pill:hover, .ghost-pill:hover { transform: translateY(-1px); box-shadow: var(--small-shadow); }
+    .solid-pill { background: linear-gradient(180deg, #c08b49, #9b642d); color: #fff8ea; border-color: rgba(80,48,20,.08); }
+    .hide { display: none !important; }
+
+    .hero {
+      text-align: center;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding-top: 18px;
+    }
+    .sun {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 4px;
+      color: #c9933f;
+      filter: drop-shadow(0 8px 12px rgba(161, 101, 35, .17));
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(48px, 7vw, 78px);
+      line-height: .95;
+      letter-spacing: -.045em;
+      margin: 0;
+      color: #3b2618;
+      text-shadow: 0 18px 36px rgba(109, 67, 24, .12);
+    }
+    .tagline {
+      margin: 15px auto 28px;
+      color: #6c5035;
+      font-size: clamp(15px, 2vw, 18px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+    }
+    .tagline::before, .tagline::after {
+      content: "";
+      display: block;
+      width: 38px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #bd8540, transparent);
+    }
+
+    .search-wrap {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto 46px;
+    }
+    .search-box {
+      width: 100%;
+      min-height: 68px;
+      border-radius: 28px;
+      border: 1px solid rgba(120, 75, 33, .14);
+      background: rgba(255, 250, 239, .88);
+      box-shadow: var(--small-shadow), inset 0 1px 0 rgba(255,255,255,.8);
+      padding: 0 84px 0 62px;
+      outline: none;
+      color: var(--ink);
+      font-size: 17px;
+      backdrop-filter: blur(22px);
+      transition: .2s ease;
+    }
+    .search-box:focus { box-shadow: 0 18px 36px rgba(133, 82, 30, .22), 0 0 0 4px rgba(189, 133, 64, .14); }
+    .search-icon { position: absolute; left: 24px; top: 50%; transform: translateY(-50%); color: #7d5226; }
+    .go-btn {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      color: #fff8ec;
+      background: linear-gradient(180deg, #c99658, #98602c);
+      box-shadow: 0 8px 16px rgba(122, 73, 28, .2);
+    }
+
+    .content {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 0 24px;
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: #422a1a;
+    }
+    .section-title::before, .section-title::after {
+      content: "";
+      height: 1px;
+      width: min(110px, 18vw);
+      background: linear-gradient(90deg, transparent, rgba(127,80,35,.28), transparent);
+    }
+
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .shortcut-card {
+      min-height: 138px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,250,240,.94), rgba(246,229,202,.83));
+      border: 1px solid rgba(126,83,42,.13);
+      box-shadow: var(--small-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .shortcut-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -48% -20%;
+      height: 70%;
+      background: radial-gradient(ellipse at center, rgba(205,151,76,.18), transparent 62%);
+      pointer-events: none;
+    }
+    .shortcut-card:hover { transform: translateY(-5px); box-shadow: 0 26px 42px rgba(73,44,16,.2), 0 6px 16px rgba(73,44,16,.14); }
+    .shortcut-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 800;
+      background: rgba(255,255,255,.6);
+      box-shadow: 0 8px 18px rgba(90,55,20,.12), inset 0 1px 0 rgba(255,255,255,.8);
+      z-index: 1;
+    }
+    .shortcut-title { font-weight: 700; z-index: 1; text-align: center; }
+    .shortcut-desc { font-size: 12px; color: var(--muted); z-index: 1; text-align: center; margin-top: -6px; }
+    .star {
+      position: absolute;
+      top: 13px;
+      right: 13px;
+      color: #b88436;
+      z-index: 2;
+      opacity: .8;
+      font-size: 18px;
+    }
+    .card-actions {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 4;
+    }
+    .mini-action {
+      width: 30px; height: 30px; border-radius: 11px;
+      background: rgba(61,41,26,.88); color: #fff4df;
+      display: grid; place-items: center;
+    }
+
+    .notes-panel {
+      margin-top: 34px;
+      border-radius: var(--radius);
+      padding: 26px 28px 28px;
+      background: rgba(255, 247, 234, .72);
+      border: 1px solid rgba(124, 83, 39, .14);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.7);
+      backdrop-filter: blur(18px);
+    }
+    .notes-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .notes-head h2 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 25px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 17px;
+    }
+    .note-card {
+      min-height: 152px;
+      padding: 18px 17px 14px;
+      border-radius: 10px 14px 12px 14px;
+      background: linear-gradient(180deg, rgba(255,238,190,.88), rgba(245,214,155,.82));
+      box-shadow: 0 16px 22px rgba(94,58,22,.16), 0 3px 9px rgba(94,58,22,.12);
+      border: 1px solid rgba(120, 79, 35, .08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transform: rotate(var(--rot, -1deg));
+      transition: .18s ease;
+    }
+    .note-card:nth-child(2n) { --rot: 1.2deg; background: linear-gradient(180deg, rgba(255,246,218,.9), rgba(240,219,179,.86)); }
+    .note-card:nth-child(3n) { --rot: -.4deg; }
+    .note-card:hover { transform: translateY(-4px) rotate(0deg); box-shadow: 0 24px 32px rgba(94,58,22,.2); }
+    .note-card::before {
+      content: "";
+      width: 52px;
+      height: 17px;
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      background: rgba(205, 170, 113, .36);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(93,58,22,.05);
+    }
+    .note-title { font-weight: 750; font-size: 14px; line-height: 1.25; color: #3f2a1b; }
+    .note-body { font-size: 13px; line-height: 1.45; color: #5e4937; white-space: pre-wrap; flex: 1; }
+    .note-meta { font-size: 11px; color: #8a6c4e; display: flex; justify-content: space-between; gap: 8px; }
+    .note-actions { position: absolute; right: 8px; bottom: 8px; display: flex; gap: 5px; }
+
+    .footer-line {
+      text-align: center;
+      color: rgba(83, 55, 31, .72);
+      font-size: 13px;
+      margin: 28px 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 11px;
+    }
+    .footer-line::before, .footer-line::after {
+      content: "✦";
+      color: #b88436;
+      font-size: 12px;
+    }
+
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(38, 25, 15, .36);
+      display: grid;
+      place-items: center;
+      z-index: 100;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .dialog {
+      width: min(560px, 100%);
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      background: rgba(255, 248, 236, .98);
+      border-radius: 28px;
+      padding: 24px;
+      border: 1px solid rgba(117,75,35,.18);
+      box-shadow: 0 30px 70px rgba(36,23,12,.32);
+    }
+    .dialog h3 { margin: 0 0 18px; font-family: var(--font-serif); font-size: 28px; font-weight: 500; }
+    .field { display: grid; gap: 7px; margin-bottom: 13px; color: #5b4029; font-weight: 650; font-size: 13px; }
+    .field input, .field textarea {
+      width: 100%;
+      border: 1px solid rgba(122,80,38,.18);
+      border-radius: 16px;
+      padding: 13px 14px;
+      outline: none;
+      background: rgba(255,255,255,.72);
+      color: var(--ink);
+    }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+    .danger { background: rgba(117, 40, 24, .1); color: #7a2b1d; }
+    .muted-note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 12px 16px;
+      border-radius: 15px;
+      background: rgba(46,31,20,.9);
+      color: #fff3df;
+      z-index: 200;
+      transition: .22s ease;
+      box-shadow: 0 15px 30px rgba(42,25,11,.22);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .empty-state {
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed rgba(125,82,38,.25);
+      border-radius: 22px;
+      background: rgba(255,250,242,.45);
+    }
+
+    @media (max-width: 980px) {
+      .shortcuts-grid { grid-template-columns: repeat(3, 1fr); }
+      .notes-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .app { grid-template-columns: 1fr; }
+      .rail {
+        position: fixed;
+        left: 50%; transform: translateX(-50%);
+        top: auto; bottom: 12px;
+        width: auto; height: 62px; flex-direction: row;
+        padding: 8px 11px; border-radius: 24px; border: 1px solid rgba(132,86,38,.17);
+        box-shadow: 0 18px 40px rgba(72,45,20,.18);
+      }
+      .mark, .rail-spacer, .tiny-dot { display: none; }
+      .nav-btn.active::after { display: none; }
+      .main { padding: 24px 16px 94px; }
+      .topbar { justify-content: center; flex-wrap: wrap; }
+      .shortcuts-grid { grid-template-columns: repeat(2, 1fr); gap: 13px; }
+      .shortcut-card { min-height: 126px; }
+      .notes-grid { grid-template-columns: repeat(2, 1fr); }
+      .notes-panel { padding: 20px 16px; }
+      h1 { font-size: 48px; }
+      .search-box { min-height: 62px; }
+    }
+    @media (max-width: 440px) {
+      .shortcuts-grid, .notes-grid { grid-template-columns: 1fr; }
+      .note-card { min-height: 125px; }
+    }
+  </style>
+</head>
+<body>
+<!--SERDAR_START_DATA_BEGIN-->
+<script id="app-data" type="application/json">
+{"title":"Serdar Start","tagline":"Hobiler. Projeler. Çalışmalar.","footer":"Serdar Start, kişisel ve özelleştirilebilir bir başlangıç sayfasıdır.","shortcuts":[{"id":"s1","title":"RePeRTuaR","desc":"music","url":"https://mserdarsaracoglu.github.io/repertuarserdar/","icon":"🎵♪","color":"#b78437","favorite":true},{"id":"s2","title":"Ada eMarket","desc":"Shoping","url":"https://adaespor.github.io/vitrin/","icon":"📀","color":"#b78437","favorite":true},{"id":"s3","title":"GitHub","desc":"Kod & Sayfalar","url":"https://github.com","icon":"GH","color":"#4a2f1c","favorite":true},{"id":"s4","title":"YouTube","desc":"Video","url":"https://www.youtube.com","icon":"▶","color":"#ad2d20","favorite":true},{"id":"s5","title":"ChatGPT","desc":"AI Asistan","url":"https://chatgpt.com","icon":"✺","color":"#6f8d78","favorite":true},{"id":"s6","title":"Google","desc":"Arama","url":"https://www.google.com","icon":"G","color":"#b0823e","favorite":false},{"id":"s7","title":"Drive","desc":"Dosyalarım","url":"https://drive.google.com","icon":"△","color":"#9c7a3d","favorite":false},{"id":"s8","title":"Docs","desc":"Belgeler","url":"https://docs.google.com","icon":"▤","color":"#9b6a2e","favorite":false},{"id":"s9","title":"Suno","desc":"Müzik Üretimi","url":"https://suno.com","icon":"♪","color":"#9b6a2e","favorite":false},{"id":"s10","title":"Nord","desc":"Stage 4 Kaynakları","url":"https://www.nordkeyboards.com","icon":"NS","color":"#7e5631","favorite":false},{"id":"s11","title":"WhatsApp Web","desc":"Mesajlar","url":"https://web.whatsapp.com","icon":"☘","color":"#4c8a63","favorite":false},{"id":"s12","title":"Spotify","desc":"Müzik","url":"https://open.spotify.com","icon":"◉","color":"#4f8b46","favorite":false},{"id":"s13","title":"GitHub Pages","desc":"Yayın","url":"https://pages.github.com","icon":"GP","color":"#6d4a2b","favorite":false},{"id":"s14","title":"Canva","desc":"Tasarım","url":"https://www.canva.com","icon":"💀","color":"#6d8a90","favorite":false},{"id":"s15","title":"Akakçe","desc":"Fiyat Takip","url":"https://www.akakce.com","icon":"₺","color":"#98602c","favorite":false}],"notes":[{"id":"n1","title":"Yeni proje taslakları","body":"Başlangıç sayfası kartlarını hobi ve çalışma alanlarına göre düzenle.","meta":"Bugün"},{"id":"n3","title":"Haftalık hedef","body":"Odak + istikrar. Önce sade yapı, sonra küçük iyileştirmeler.","meta":"Bu hafta"},{"id":"n5","title":"Mac yedeklemesi","body":"Yerel ana HTML dosyasını GitHub güncellemesinden önce yedekle.","meta":"Kontrol"}]}
+</script>
+<!--SERDAR_START_DATA_END-->
+  <div class="app">
+    <aside class="rail" aria-label="Yan menü">
+      <div class="mark">S</div>
+      <button class="nav-btn active" title="Ana Sayfa" data-jump="top" aria-label="Ana Sayfa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M10 20v-6h4v6"></path></svg>
+      </button>
+      <button class="nav-btn" title="Hızlı Erişim" data-jump="shortcuts" aria-label="Hızlı Erişim">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+      </button>
+      <button class="nav-btn" title="Notlar" data-jump="notes" aria-label="Notlar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"></path><path d="M15 3v4h4"></path><path d="M9 12h6M9 16h6"></path></svg>
+      </button>
+      <div class="rail-spacer"></div>
+      <span class="tiny-dot" title="Desert Studio"></span>
+    </aside>
+
+    <main class="main" id="top">
+      <div class="topbar">
+        <button class="edit-pill" id="toggleEditBtn">Düzenlemeyi Kapat</button>
+        <button class="ghost-pill edit-only" id="addShortcutBtn">+ Kart</button>
+        <button class="ghost-pill edit-only" id="addNoteBtn">+ Not</button>
+        <button class="solid-pill edit-only" id="exportHtmlBtn">HTML Dışa Aktar</button>
+        <button class="ghost-pill edit-only" id="resetDraftBtn">Taslağı Sıfırla</button>
+      </div>
+
+      <section class="hero">
+        <svg class="sun" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="24" cy="24" r="8"></circle><path d="M24 4v8M24 36v8M4 24h8M36 24h8M9.9 9.9l5.7 5.7M32.4 32.4l5.7 5.7M38.1 9.9l-5.7 5.7M15.6 32.4l-5.7 5.7"></path></svg>
+        <h1 id="appTitle">Serdar Start</h1>
+        <div class="tagline" id="appTagline">Hobiler. Projeler. Çalışmalar.</div>
+        <form class="search-wrap" id="searchForm" role="search">
+          <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input class="search-box" id="searchInput" placeholder="Web’de ara veya URL yaz" autocomplete="off">
+          <button class="go-btn" aria-label="Ara veya git">→</button>
+        </form>
+      </section>
+
+      <section class="content" id="shortcuts">
+        <h2 class="section-title">Hızlı Erişim</h2>
+        <div class="shortcuts-grid" id="shortcutsGrid"><a class="shortcut-card" href="https://mserdarsaracoglu.github.io/repertuarserdar/" target="_blank" rel="noopener noreferrer">
+          <span class="star">☆</span>
+          <div class="shortcut-logo" style="color:#b78437">🎵♪</div>
+          <div class="shortcut-title">RePeRTuaR</div>
+          <div class="shortcut-desc">music</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="0" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="0" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://adaespor.github.io/vitrin/" target="_blank" rel="noopener noreferrer">
+          <span class="star">☆</span>
+          <div class="shortcut-logo" style="color:#b78437">📀</div>
+          <div class="shortcut-title">Ada eMarket</div>
+          <div class="shortcut-desc">Shoping</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="1" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="1" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <span class="star">☆</span>
+          <div class="shortcut-logo" style="color:#4a2f1c">GH</div>
+          <div class="shortcut-title">GitHub</div>
+          <div class="shortcut-desc">Kod &amp; Sayfalar</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="2" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="2" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+          <span class="star">☆</span>
+          <div class="shortcut-logo" style="color:#ad2d20">▶</div>
+          <div class="shortcut-title">YouTube</div>
+          <div class="shortcut-desc">Video</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="3" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="3" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
+          <span class="star">☆</span>
+          <div class="shortcut-logo" style="color:#6f8d78">✺</div>
+          <div class="shortcut-title">ChatGPT</div>
+          <div class="shortcut-desc">AI Asistan</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="4" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="4" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#b0823e">G</div>
+          <div class="shortcut-title">Google</div>
+          <div class="shortcut-desc">Arama</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="5" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="5" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://drive.google.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#9c7a3d">△</div>
+          <div class="shortcut-title">Drive</div>
+          <div class="shortcut-desc">Dosyalarım</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="6" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="6" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://docs.google.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#9b6a2e">▤</div>
+          <div class="shortcut-title">Docs</div>
+          <div class="shortcut-desc">Belgeler</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="7" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="7" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://suno.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#9b6a2e">♪</div>
+          <div class="shortcut-title">Suno</div>
+          <div class="shortcut-desc">Müzik Üretimi</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="8" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="8" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://www.nordkeyboards.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#7e5631">NS</div>
+          <div class="shortcut-title">Nord</div>
+          <div class="shortcut-desc">Stage 4 Kaynakları</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="9" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="9" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://web.whatsapp.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#4c8a63">☘</div>
+          <div class="shortcut-title">WhatsApp Web</div>
+          <div class="shortcut-desc">Mesajlar</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="10" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="10" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://open.spotify.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#4f8b46">◉</div>
+          <div class="shortcut-title">Spotify</div>
+          <div class="shortcut-desc">Müzik</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="11" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="11" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://pages.github.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#6d4a2b">GP</div>
+          <div class="shortcut-title">GitHub Pages</div>
+          <div class="shortcut-desc">Yayın</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="12" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="12" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://www.canva.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#6d8a90">💀</div>
+          <div class="shortcut-title">Canva</div>
+          <div class="shortcut-desc">Tasarım</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="13" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="13" title="Sil">×</button>
+          </div>
+        </a><a class="shortcut-card" href="https://www.akakce.com" target="_blank" rel="noopener noreferrer">
+          
+          <div class="shortcut-logo" style="color:#98602c">₺</div>
+          <div class="shortcut-title">Akakçe</div>
+          <div class="shortcut-desc">Fiyat Takip</div>
+          <div class="card-actions edit-only ">
+            <button class="mini-action" data-action="edit-shortcut" data-index="14" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="14" title="Sil">×</button>
+          </div>
+        </a></div>
+
+        <section class="notes-panel" id="notes">
+          <div class="notes-head">
+            <h2>
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h9l3 3v15H6z"></path><path d="M15 3v4h4"></path><path d="M9 12h6M9 16h4"></path></svg>
+              Notlar
+            </h2>
+            <button class="ghost-pill" id="quickAddNoteBtn">+ Not ekle</button>
+          </div>
+          <div class="notes-grid" id="notesGrid"><article class="note-card">
+          <div class="note-title">Yeni proje taslakları</div>
+          <div class="note-body">Başlangıç sayfası kartlarını hobi ve çalışma alanlarına göre düzenle.</div>
+          <div class="note-meta"><span>Bugün</span><span>1</span></div>
+          <div class="note-actions edit-only ">
+            <button class="mini-action" data-action="edit-note" data-index="0" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-note" data-index="0" title="Sil">×</button>
+          </div>
+        </article><article class="note-card">
+          <div class="note-title">Haftalık hedef</div>
+          <div class="note-body">Odak + istikrar. Önce sade yapı, sonra küçük iyileştirmeler.</div>
+          <div class="note-meta"><span>Bu hafta</span><span>2</span></div>
+          <div class="note-actions edit-only ">
+            <button class="mini-action" data-action="edit-note" data-index="1" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-note" data-index="1" title="Sil">×</button>
+          </div>
+        </article><article class="note-card">
+          <div class="note-title">Mac yedeklemesi</div>
+          <div class="note-body">Yerel ana HTML dosyasını GitHub güncellemesinden önce yedekle.</div>
+          <div class="note-meta"><span>Kontrol</span><span>3</span></div>
+          <div class="note-actions edit-only ">
+            <button class="mini-action" data-action="edit-note" data-index="2" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-note" data-index="2" title="Sil">×</button>
+          </div>
+        </article></div>
+        </section>
+        <div class="footer-line" id="appFooter">Serdar Start, kişisel ve özelleştirilebilir bir başlangıç sayfasıdır.</div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">Kart güncellendi.</div>
+
+  <script>
+    const APP_STORAGE_KEY = "serdar_start_desert_studio_v14_local_draft";
+    const APP_VERSION = "1.4";
+    const params = new URLSearchParams(location.search);
+    let editMode = params.get("edit") === "1";
+    let data = loadData();
+
+    const $ = (sel) => document.querySelector(sel);
+    const appTitle = $("#appTitle");
+    const appTagline = $("#appTagline");
+    const appFooter = $("#appFooter");
+    const shortcutsGrid = $("#shortcutsGrid");
+    const notesGrid = $("#notesGrid");
+    const toast = $("#toast");
+
+    function defaultData(){
+      try { return JSON.parse(document.getElementById("app-data").textContent.trim()); }
+      catch(err) { console.error(err); return {title:"Serdar Start", tagline:"Hobiler. Projeler. Çalışmalar.", footer:"", shortcuts:[], notes:[]}; }
+    }
+
+    function loadData(){
+      const base = defaultData();
+      const draft = localStorage.getItem(APP_STORAGE_KEY);
+      if (draft) {
+        try { return {...base, ...JSON.parse(draft)}; }
+        catch { return base; }
+      }
+      return base;
+    }
+
+    function saveDraft(){
+      localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function render(){
+      appTitle.textContent = data.title || "Serdar Start";
+      appTagline.textContent = data.tagline || "Hobiler. Projeler. Çalışmalar.";
+      appFooter.textContent = data.footer || "";
+      document.title = `${data.title || "Serdar Start"} v${APP_VERSION}`;
+      renderShortcuts();
+      renderNotes();
+      renderEditMode();
+    }
+
+    function renderShortcuts(){
+      shortcutsGrid.innerHTML = "";
+      if (!data.shortcuts?.length) {
+        shortcutsGrid.innerHTML = `<div class="empty-state">Henüz kart yok. Düzenle modunda yeni kart ekleyebilirsin.</div>`;
+        return;
+      }
+      data.shortcuts.forEach((item, index) => {
+        const a = document.createElement("a");
+        a.className = "shortcut-card";
+        a.href = item.url || "#";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.innerHTML = `
+          ${item.favorite ? `<span class="star">☆</span>` : ""}
+          <div class="shortcut-logo" style="color:${escapeAttr(item.color || '#9b6a2e')}">${escapeHtml(item.icon || initial(item.title))}</div>
+          <div class="shortcut-title">${escapeHtml(item.title || "Başlıksız")}</div>
+          <div class="shortcut-desc">${escapeHtml(item.desc || cleanHost(item.url || ""))}</div>
+          <div class="card-actions edit-only ${editMode ? "" : "hide"}">
+            <button class="mini-action" data-action="edit-shortcut" data-index="${index}" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-shortcut" data-index="${index}" title="Sil">×</button>
+          </div>
+        `;
+        shortcutsGrid.appendChild(a);
+      });
+    }
+
+    function renderNotes(){
+      notesGrid.innerHTML = "";
+      if (!data.notes?.length) {
+        notesGrid.innerHTML = `<div class="empty-state">Henüz not yok. Düzenle modunda not ekleyebilirsin.</div>`;
+        return;
+      }
+      data.notes.forEach((note, index) => {
+        const div = document.createElement("article");
+        div.className = "note-card";
+        div.innerHTML = `
+          <div class="note-title">${escapeHtml(note.title || "Not")}</div>
+          <div class="note-body">${escapeHtml(note.body || "")}</div>
+          <div class="note-meta"><span>${escapeHtml(note.meta || "")}</span><span>${index + 1}</span></div>
+          <div class="note-actions edit-only ${editMode ? "" : "hide"}">
+            <button class="mini-action" data-action="edit-note" data-index="${index}" title="Düzenle">✎</button>
+            <button class="mini-action" data-action="delete-note" data-index="${index}" title="Sil">×</button>
+          </div>
+        `;
+        notesGrid.appendChild(div);
+      });
+    }
+
+    function renderEditMode(){
+      document.querySelectorAll(".edit-only").forEach(el => el.classList.toggle("hide", !editMode));
+      $("#toggleEditBtn").textContent = editMode ? "Düzenlemeyi Kapat" : "Düzenle";
+      $("#quickAddNoteBtn").classList.toggle("hide", !editMode);
+    }
+
+    function showToast(message){
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 2300);
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+    }
+    function escapeAttr(str){ return escapeHtml(str).replace(/`/g, "&#096;"); }
+    function initial(str){ return String(str || "?").trim().slice(0,2).toUpperCase(); }
+    function cleanHost(url){
+      try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return ""; }
+    }
+
+    function normalizeUrl(input){
+      const q = input.trim();
+      if (!q) return "";
+      const looksUrl = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i.test(q);
+      if (looksUrl) return q.startsWith("http") ? q : `https://${q}`;
+      return `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+    }
+
+    $("#searchForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const url = normalizeUrl($("#searchInput").value);
+      if (url) location.href = url;
+    });
+
+    document.addEventListener("click", (e) => {
+      const jump = e.target.closest("[data-jump]");
+      if (jump) {
+        const id = jump.dataset.jump;
+        (id === "top" ? document.body : document.getElementById(id))?.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+
+      const actionBtn = e.target.closest("[data-action]");
+      if (!actionBtn) return;
+      e.preventDefault(); e.stopPropagation();
+      const index = Number(actionBtn.dataset.index);
+      const action = actionBtn.dataset.action;
+      if (action === "edit-shortcut") openShortcutDialog(data.shortcuts[index], index);
+      if (action === "delete-shortcut") {
+        if (confirm(`“${data.shortcuts[index].title}” kartı silinsin mi?`)) {
+          data.shortcuts.splice(index, 1); saveDraft(); render(); showToast("Kart silindi.");
+        }
+      }
+      if (action === "edit-note") openNoteDialog(data.notes[index], index);
+      if (action === "delete-note") {
+        if (confirm(`“${data.notes[index].title}” notu silinsin mi?`)) {
+          data.notes.splice(index, 1); saveDraft(); render(); showToast("Not silindi.");
+        }
+      }
+    });
+
+    $("#toggleEditBtn").addEventListener("click", () => {
+      editMode = !editMode;
+      renderEditMode();
+      showToast(editMode ? "Düzenleme modu açıldı." : "Düzenleme modu kapandı.");
+    });
+    $("#addShortcutBtn").addEventListener("click", () => openShortcutDialog());
+    $("#addNoteBtn").addEventListener("click", () => openNoteDialog());
+    $("#quickAddNoteBtn").addEventListener("click", () => openNoteDialog());
+    $("#resetDraftBtn").addEventListener("click", () => {
+      if (!confirm("Bu cihazdaki yerel taslak silinsin ve HTML içindeki varsayılan veriye dönülsün mü?")) return;
+      localStorage.removeItem(APP_STORAGE_KEY);
+      data = defaultData();
+      render();
+      showToast("Yerel taslak sıfırlandı.");
+    });
+    $("#exportHtmlBtn").addEventListener("click", exportCurrentHtml);
+
+    function openShortcutDialog(item = {}, index = null){
+      openDialog(`
+        <h3>${index === null ? "Kart Ekle" : "Kartı Düzenle"}</h3>
+        <label class="field">Başlık<input id="d-title" value="${escapeAttr(item.title || "")}" placeholder="Örn. Suno" /></label>
+        <label class="field">Açıklama<input id="d-desc" value="${escapeAttr(item.desc || "")}" placeholder="Örn. Müzik Üretimi" /></label>
+        <label class="field">URL<input id="d-url" value="${escapeAttr(item.url || "")}" placeholder="https://..." /></label>
+        <label class="field">İkon / Kısa Kod<input id="d-icon" value="${escapeAttr(item.icon || "")}" placeholder="S, GH, ♪, ▶" maxlength="3" /></label>
+        <label class="field">Renk<input id="d-color" value="${escapeAttr(item.color || "#9b6a2e")}" placeholder="#9b6a2e" /></label>
+        <label class="field" style="display:flex;grid-template-columns:auto 1fr;align-items:center;gap:10px"><input id="d-fav" type="checkbox" ${item.favorite ? "checked" : ""} style="width:auto" /> Favori yıldızı göster</label>
+        <div class="dialog-actions">
+          <button class="ghost-pill" data-close>Vazgeç</button>
+          <button class="solid-pill" id="saveDialogBtn">Kaydet</button>
+        </div>
+      `, () => {
+        const obj = {
+          id: item.id || `s${Date.now()}`,
+          title: $("#d-title").value.trim() || "Yeni Kart",
+          desc: $("#d-desc").value.trim(),
+          url: normalizeUrl($("#d-url").value.trim()) || "#",
+          icon: $("#d-icon").value.trim() || initial($("#d-title").value),
+          color: $("#d-color").value.trim() || "#9b6a2e",
+          favorite: $("#d-fav").checked
+        };
+        if (index === null) data.shortcuts.push(obj); else data.shortcuts[index] = obj;
+        saveDraft(); render(); showToast(index === null ? "Kart eklendi." : "Kart güncellendi.");
+      });
+    }
+
+    function openNoteDialog(note = {}, index = null){
+      openDialog(`
+        <h3>${index === null ? "Not Ekle" : "Notu Düzenle"}</h3>
+        <label class="field">Başlık<input id="n-title" value="${escapeAttr(note.title || "")}" placeholder="Örn. GitHub güncelleme" /></label>
+        <label class="field">Not<textarea id="n-body" placeholder="Kısa not yaz...">${escapeHtml(note.body || "")}</textarea></label>
+        <label class="field">Etiket / Tarih<input id="n-meta" value="${escapeAttr(note.meta || "")}" placeholder="Bugün, Müzik, Proje..." /></label>
+        <div class="dialog-actions">
+          <button class="ghost-pill" data-close>Vazgeç</button>
+          <button class="solid-pill" id="saveDialogBtn">Kaydet</button>
+        </div>
+      `, () => {
+        const obj = {
+          id: note.id || `n${Date.now()}`,
+          title: $("#n-title").value.trim() || "Yeni Not",
+          body: $("#n-body").value.trim(),
+          meta: $("#n-meta").value.trim()
+        };
+        if (index === null) data.notes.push(obj); else data.notes[index] = obj;
+        saveDraft(); render(); showToast(index === null ? "Not eklendi." : "Not güncellendi.");
+      });
+    }
+
+    function openDialog(content, onSave){
+      const wrap = document.createElement("div");
+      wrap.className = "dialog-backdrop";
+      wrap.innerHTML = `<div class="dialog">${content}</div>`;
+      document.body.appendChild(wrap);
+      const close = () => wrap.remove();
+      wrap.addEventListener("click", (e) => { if (e.target === wrap || e.target.closest("[data-close]")) close(); });
+      wrap.querySelector("#saveDialogBtn")?.addEventListener("click", () => { onSave(); close(); });
+      wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      setTimeout(() => wrap.querySelector("input, textarea")?.focus(), 30);
+    }
+
+    function exportCurrentHtml(){
+      const html = document.documentElement.outerHTML;
+      const dataScript = `<script id="app-data" type="application/json">\n${JSON.stringify(data)}\n<\/script>`;
+      const newHtml = '<!DOCTYPE html>\n' + html.replace(/<script id="app-data" type="application\/json">[\s\S]*?<\/script>/, dataScript);
+      const blob = new Blob([newHtml], {type: "text/html;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "serdar-start-v1.4-desert-studio.html";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast("Güncel HTML indirildi. GitHub’daki index.html ile değiştirebilirsin.");
+    }
+
+    render();
+  </script>
+
+
+</body></html>
