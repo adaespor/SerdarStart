@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="tr"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Serdar Start v1.4</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%23f1dfc1'/%3E%3Ctext x='60' y='78' text-anchor='middle' font-size='70' font-family='Georgia,serif' fill='%239b6a2e'%3ES%3C/text%3E%3C/svg%3E">
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Serdar Start v1.4.1 Desert Studio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%23f1dfc1'/%3E%3Ctext x='60' y='78' text-anchor='middle' font-size='70' font-family='Georgia,serif' fill='%239b6a2e'%3ES%3C/text%3E%3C/svg%3E" />
   <style>
     :root {
       --sand-0: #fff8ee;
@@ -291,6 +292,27 @@
       pointer-events: none;
     }
     .shortcut-card:hover { transform: translateY(-5px); box-shadow: 0 26px 42px rgba(73,44,16,.2), 0 6px 16px rgba(73,44,16,.14); }
+    .shortcut-card[draggable="true"] { cursor: grab; }
+    .shortcut-card[draggable="true"]:active { cursor: grabbing; }
+    .shortcut-card.dragging { opacity: .55; transform: scale(.98); }
+    .shortcut-card.drag-over { outline: 2px solid rgba(160, 109, 50, .42); outline-offset: 4px; }
+    .drag-handle {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255, 250, 240, .72);
+      border: 1px solid rgba(124, 83, 39, .12);
+      color: rgba(80, 55, 31, .72);
+      font-size: 15px;
+      z-index: 3;
+      cursor: grab;
+      user-select: none;
+    }
     .shortcut-logo {
       width: 54px;
       height: 54px;
@@ -504,20 +526,20 @@
 <body>
 <!--SERDAR_START_DATA_BEGIN-->
 <script id="app-data" type="application/json">
-{"title":"Serdar Start","tagline":"Hobiler. Projeler. Çalışmalar.","footer":"Serdar Start, kişisel ve özelleştirilebilir bir başlangıç sayfasıdır.","shortcuts":[{"id":"s1","title":"RePeRTuaR","desc":"music","url":"https://mserdarsaracoglu.github.io/repertuarserdar/","icon":"🎵♪","color":"#b78437","favorite":true},{"id":"s2","title":"Ada eMarket","desc":"Shoping","url":"https://adaespor.github.io/vitrin/","icon":"📀","color":"#b78437","favorite":true},{"id":"s3","title":"GitHub","desc":"Kod & Sayfalar","url":"https://github.com","icon":"GH","color":"#4a2f1c","favorite":true},{"id":"s4","title":"YouTube","desc":"Video","url":"https://www.youtube.com","icon":"▶","color":"#ad2d20","favorite":true},{"id":"s5","title":"ChatGPT","desc":"AI Asistan","url":"https://chatgpt.com","icon":"✺","color":"#6f8d78","favorite":true},{"id":"s6","title":"Google","desc":"Arama","url":"https://www.google.com","icon":"G","color":"#b0823e","favorite":false},{"id":"s7","title":"Drive","desc":"Dosyalarım","url":"https://drive.google.com","icon":"△","color":"#9c7a3d","favorite":false},{"id":"s8","title":"Docs","desc":"Belgeler","url":"https://docs.google.com","icon":"▤","color":"#9b6a2e","favorite":false},{"id":"s9","title":"Suno","desc":"Müzik Üretimi","url":"https://suno.com","icon":"♪","color":"#9b6a2e","favorite":false},{"id":"s10","title":"Nord","desc":"Stage 4 Kaynakları","url":"https://www.nordkeyboards.com","icon":"NS","color":"#7e5631","favorite":false},{"id":"s11","title":"GitHub","desc":"Main Start","url":"https://adaespor.github.io/SerdarStart/","icon":"☣️","color":"#4c8a63","favorite":false},{"id":"s12","title":"Spotify","desc":"Müzik","url":"https://open.spotify.com","icon":"◉","color":"#4f8b46","favorite":false},{"id":"s13","title":"GitHub Pages","desc":"Yayın","url":"https://pages.github.com","icon":"GP","color":"#6d4a2b","favorite":false},{"id":"s14","title":"Canva","desc":"Tasarım","url":"https://www.canva.com","icon":"💀","color":"#6d8a90","favorite":false},{"id":"s15","title":"Akakçe","desc":"Fiyat Takip","url":"https://www.akakce.com","icon":"₺","color":"#98602c","favorite":false}],"notes":[{"id":"n1","title":"Yeni proje taslakları","body":"Başlangıç sayfası kartlarını hobi ve çalışma alanlarına göre düzenle.","meta":"Bugün"},{"id":"n3","title":"Haftalık hedef","body":"Odak + istikrar. Önce sade yapı, sonra küçük iyileştirmeler.","meta":"Bu hafta"},{"id":"n5","title":"Mac yedeklemesi","body":"Yerel ana HTML dosyasını GitHub güncellemesinden önce yedekle.","meta":"Kontrol"}]}
+{"title":"Serdar Start","tagline":"Hobiler. Projeler. Çalışmalar.","footer":"Serdar Start, kişisel ve özelleştirilebilir bir başlangıç sayfasıdır.","shortcuts":[{"id":"s1","title":"Notion","desc":"Workspace","url":"https://www.notion.so","icon":"N","color":"#2f2118","favorite":true},{"id":"s2","title":"Gmail","desc":"Mail","url":"https://mail.google.com","icon":"M","color":"#b78437","favorite":true},{"id":"s3","title":"GitHub","desc":"Kod & Sayfalar","url":"https://github.com","icon":"GH","color":"#4a2f1c","favorite":true},{"id":"s4","title":"YouTube","desc":"Video","url":"https://www.youtube.com","icon":"▶","color":"#ad2d20","favorite":true},{"id":"s5","title":"ChatGPT","desc":"AI Asistan","url":"https://chatgpt.com","icon":"✺","color":"#6f8d78","favorite":true},{"id":"s6","title":"Google","desc":"Arama","url":"https://www.google.com","icon":"G","color":"#b0823e","favorite":false},{"id":"s7","title":"Drive","desc":"Dosyalarım","url":"https://drive.google.com","icon":"△","color":"#9c7a3d","favorite":false},{"id":"s8","title":"Docs","desc":"Belgeler","url":"https://docs.google.com","icon":"▤","color":"#9b6a2e","favorite":false},{"id":"s9","title":"Suno","desc":"Müzik Üretimi","url":"https://suno.com","icon":"♪","color":"#9b6a2e","favorite":false},{"id":"s10","title":"Nord","desc":"Stage 4 Kaynakları","url":"https://www.nordkeyboards.com","icon":"NS","color":"#7e5631","favorite":false},{"id":"s11","title":"WhatsApp Web","desc":"Mesajlar","url":"https://web.whatsapp.com","icon":"☘","color":"#4c8a63","favorite":false},{"id":"s12","title":"Spotify","desc":"Müzik","url":"https://open.spotify.com","icon":"◉","color":"#4f8b46","favorite":false},{"id":"s13","title":"GitHub Pages","desc":"Yayın","url":"https://pages.github.com","icon":"GP","color":"#6d4a2b","favorite":false},{"id":"s14","title":"Canva","desc":"Tasarım","url":"https://www.canva.com","icon":"C","color":"#6d8a90","favorite":false},{"id":"s15","title":"Akakçe","desc":"Fiyat Takip","url":"https://www.akakce.com","icon":"₺","color":"#98602c","favorite":false}],"notes":[{"id":"n1","title":"Yeni proje taslakları","body":"Başlangıç sayfası kartlarını hobi ve çalışma alanlarına göre düzenle.","meta":"Bugün"},{"id":"n2","title":"GitHub README","body":"Yayın klasöründeki açıklama ve sürüm notları güncellenecek.","meta":"Dün"},{"id":"n3","title":"Haftalık hedef","body":"Odak + istikrar. Önce sade yapı, sonra küçük iyileştirmeler.","meta":"Bu hafta"},{"id":"n4","title":"Suno denemeleri","body":"Yeni prompt şablonlarını notlara bağla, başarılı stilleri ayır.","meta":"Müzik"},{"id":"n5","title":"Mac yedeklemesi","body":"Yerel ana HTML dosyasını GitHub güncellemesinden önce yedekle.","meta":"Kontrol"}]}
 </script>
 <!--SERDAR_START_DATA_END-->
   <div class="app">
     <aside class="rail" aria-label="Yan menü">
       <div class="mark">S</div>
       <button class="nav-btn active" title="Ana Sayfa" data-jump="top" aria-label="Ana Sayfa">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M10 20v-6h4v6"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
       </button>
       <button class="nav-btn" title="Hızlı Erişim" data-jump="shortcuts" aria-label="Hızlı Erişim">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       </button>
       <button class="nav-btn" title="Notlar" data-jump="notes" aria-label="Notlar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"></path><path d="M15 3v4h4"></path><path d="M9 12h6M9 16h6"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>
       </button>
       <div class="rail-spacer"></div>
       <span class="tiny-dot" title="Desert Studio"></span>
@@ -525,209 +547,51 @@
 
     <main class="main" id="top">
       <div class="topbar">
-        <button class="edit-pill" id="toggleEditBtn">Düzenlemeyi Kapat</button>
-        <button class="ghost-pill edit-only" id="addShortcutBtn">+ Kart</button>
-        <button class="ghost-pill edit-only" id="addNoteBtn">+ Not</button>
-        <button class="solid-pill edit-only" id="exportHtmlBtn">HTML Dışa Aktar</button>
-        <button class="ghost-pill edit-only" id="resetDraftBtn">Taslağı Sıfırla</button>
+        <button class="edit-pill author-only hide" id="toggleEditBtn">Düzenle</button>
+        <button class="ghost-pill edit-only hide" id="addShortcutBtn">+ Kart</button>
+        <button class="ghost-pill edit-only hide" id="addNoteBtn">+ Not</button>
+        <button class="solid-pill edit-only hide" id="exportHtmlBtn">HTML Dışa Aktar</button>
+        <button class="ghost-pill edit-only hide" id="resetDraftBtn">Taslağı Sıfırla</button>
       </div>
 
       <section class="hero">
-        <svg class="sun" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="24" cy="24" r="8"></circle><path d="M24 4v8M24 36v8M4 24h8M36 24h8M9.9 9.9l5.7 5.7M32.4 32.4l5.7 5.7M38.1 9.9l-5.7 5.7M15.6 32.4l-5.7 5.7"></path></svg>
+        <svg class="sun" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="24" cy="24" r="8"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8M9.9 9.9l5.7 5.7M32.4 32.4l5.7 5.7M38.1 9.9l-5.7 5.7M15.6 32.4l-5.7 5.7"/></svg>
         <h1 id="appTitle">Serdar Start</h1>
         <div class="tagline" id="appTagline">Hobiler. Projeler. Çalışmalar.</div>
         <form class="search-wrap" id="searchForm" role="search">
-          <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
-          <input class="search-box" id="searchInput" placeholder="Web’de ara veya URL yaz" autocomplete="off">
+          <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="search-box" id="searchInput" placeholder="Web’de ara veya URL yaz" autocomplete="off" />
           <button class="go-btn" aria-label="Ara veya git">→</button>
         </form>
       </section>
 
       <section class="content" id="shortcuts">
         <h2 class="section-title">Hızlı Erişim</h2>
-        <div class="shortcuts-grid" id="shortcutsGrid"><a class="shortcut-card" href="https://mserdarsaracoglu.github.io/repertuarserdar/" target="_blank" rel="noopener noreferrer">
-          <span class="star">☆</span>
-          <div class="shortcut-logo" style="color:#b78437">🎵♪</div>
-          <div class="shortcut-title">RePeRTuaR</div>
-          <div class="shortcut-desc">music</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="0" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="0" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://adaespor.github.io/vitrin/" target="_blank" rel="noopener noreferrer">
-          <span class="star">☆</span>
-          <div class="shortcut-logo" style="color:#b78437">📀</div>
-          <div class="shortcut-title">Ada eMarket</div>
-          <div class="shortcut-desc">Shoping</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="1" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="1" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://github.com" target="_blank" rel="noopener noreferrer">
-          <span class="star">☆</span>
-          <div class="shortcut-logo" style="color:#4a2f1c">GH</div>
-          <div class="shortcut-title">GitHub</div>
-          <div class="shortcut-desc">Kod &amp; Sayfalar</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="2" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="2" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-          <span class="star">☆</span>
-          <div class="shortcut-logo" style="color:#ad2d20">▶</div>
-          <div class="shortcut-title">YouTube</div>
-          <div class="shortcut-desc">Video</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="3" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="3" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
-          <span class="star">☆</span>
-          <div class="shortcut-logo" style="color:#6f8d78">✺</div>
-          <div class="shortcut-title">ChatGPT</div>
-          <div class="shortcut-desc">AI Asistan</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="4" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="4" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://www.google.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#b0823e">G</div>
-          <div class="shortcut-title">Google</div>
-          <div class="shortcut-desc">Arama</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="5" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="5" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://drive.google.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#9c7a3d">△</div>
-          <div class="shortcut-title">Drive</div>
-          <div class="shortcut-desc">Dosyalarım</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="6" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="6" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://docs.google.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#9b6a2e">▤</div>
-          <div class="shortcut-title">Docs</div>
-          <div class="shortcut-desc">Belgeler</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="7" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="7" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://suno.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#9b6a2e">♪</div>
-          <div class="shortcut-title">Suno</div>
-          <div class="shortcut-desc">Müzik Üretimi</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="8" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="8" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://www.nordkeyboards.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#7e5631">NS</div>
-          <div class="shortcut-title">Nord</div>
-          <div class="shortcut-desc">Stage 4 Kaynakları</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="9" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="9" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://adaespor.github.io/SerdarStart/" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#4c8a63">☣️</div>
-          <div class="shortcut-title">GitHub</div>
-          <div class="shortcut-desc">Main Start</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="10" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="10" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://open.spotify.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#4f8b46">◉</div>
-          <div class="shortcut-title">Spotify</div>
-          <div class="shortcut-desc">Müzik</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="11" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="11" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://pages.github.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#6d4a2b">GP</div>
-          <div class="shortcut-title">GitHub Pages</div>
-          <div class="shortcut-desc">Yayın</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="12" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="12" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://www.canva.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#6d8a90">💀</div>
-          <div class="shortcut-title">Canva</div>
-          <div class="shortcut-desc">Tasarım</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="13" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="13" title="Sil">×</button>
-          </div>
-        </a><a class="shortcut-card" href="https://www.akakce.com" target="_blank" rel="noopener noreferrer">
-          
-          <div class="shortcut-logo" style="color:#98602c">₺</div>
-          <div class="shortcut-title">Akakçe</div>
-          <div class="shortcut-desc">Fiyat Takip</div>
-          <div class="card-actions edit-only">
-            <button class="mini-action" data-action="edit-shortcut" data-index="14" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-shortcut" data-index="14" title="Sil">×</button>
-          </div>
-        </a></div>
+        <div class="shortcuts-grid" id="shortcutsGrid"></div>
 
         <section class="notes-panel" id="notes">
           <div class="notes-head">
             <h2>
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h9l3 3v15H6z"></path><path d="M15 3v4h4"></path><path d="M9 12h6M9 16h4"></path></svg>
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4"/><path d="M9 12h6M9 16h4"/></svg>
               Notlar
             </h2>
             <button class="ghost-pill" id="quickAddNoteBtn">+ Not ekle</button>
           </div>
-          <div class="notes-grid" id="notesGrid"><article class="note-card">
-          <div class="note-title">Yeni proje taslakları</div>
-          <div class="note-body">Başlangıç sayfası kartlarını hobi ve çalışma alanlarına göre düzenle.</div>
-          <div class="note-meta"><span>Bugün</span><span>1</span></div>
-          <div class="note-actions edit-only">
-            <button class="mini-action" data-action="edit-note" data-index="0" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-note" data-index="0" title="Sil">×</button>
-          </div>
-        </article><article class="note-card">
-          <div class="note-title">Haftalık hedef</div>
-          <div class="note-body">Odak + istikrar. Önce sade yapı, sonra küçük iyileştirmeler.</div>
-          <div class="note-meta"><span>Bu hafta</span><span>2</span></div>
-          <div class="note-actions edit-only">
-            <button class="mini-action" data-action="edit-note" data-index="1" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-note" data-index="1" title="Sil">×</button>
-          </div>
-        </article><article class="note-card">
-          <div class="note-title">Mac yedeklemesi</div>
-          <div class="note-body">Yerel ana HTML dosyasını GitHub güncellemesinden önce yedekle.</div>
-          <div class="note-meta"><span>Kontrol</span><span>3</span></div>
-          <div class="note-actions edit-only">
-            <button class="mini-action" data-action="edit-note" data-index="2" title="Düzenle">✎</button>
-            <button class="mini-action" data-action="delete-note" data-index="2" title="Sil">×</button>
-          </div>
-        </article></div>
+          <div class="notes-grid" id="notesGrid"></div>
         </section>
         <div class="footer-line" id="appFooter">Serdar Start, kişisel ve özelleştirilebilir bir başlangıç sayfasıdır.</div>
       </section>
     </main>
   </div>
 
-  <div class="toast" id="toast">Düzenleme modu açıldı.</div>
+  <div class="toast" id="toast"></div>
 
   <script>
     const APP_STORAGE_KEY = "serdar_start_desert_studio_v14_local_draft";
-    const APP_VERSION = "1.4";
+    const APP_VERSION = "1.4.1";
     const params = new URLSearchParams(location.search);
-    let editMode = params.get("edit") === "1";
+    const authorMode = params.get("edit") === "1";
+    let editMode = authorMode;
     let data = loadData();
 
     const $ = (sel) => document.querySelector(sel);
@@ -776,10 +640,13 @@
       data.shortcuts.forEach((item, index) => {
         const a = document.createElement("a");
         a.className = "shortcut-card";
+        a.dataset.index = index;
+        a.draggable = editMode && authorMode;
         a.href = item.url || "#";
         a.target = "_blank";
         a.rel = "noopener noreferrer";
         a.innerHTML = `
+          ${editMode && authorMode ? `<span class="drag-handle" title="Sürükle ve sırala">↕</span>` : ""}
           ${item.favorite ? `<span class="star">☆</span>` : ""}
           <div class="shortcut-logo" style="color:${escapeAttr(item.color || '#9b6a2e')}">${escapeHtml(item.icon || initial(item.title))}</div>
           <div class="shortcut-title">${escapeHtml(item.title || "Başlıksız")}</div>
@@ -816,9 +683,13 @@
     }
 
     function renderEditMode(){
-      document.querySelectorAll(".edit-only").forEach(el => el.classList.toggle("hide", !editMode));
+      document.querySelectorAll(".author-only").forEach(el => el.classList.toggle("hide", !authorMode));
+      document.querySelectorAll(".edit-only").forEach(el => el.classList.toggle("hide", !(authorMode && editMode)));
       $("#toggleEditBtn").textContent = editMode ? "Düzenlemeyi Kapat" : "Düzenle";
-      $("#quickAddNoteBtn").classList.toggle("hide", !editMode);
+      $("#quickAddNoteBtn").classList.toggle("hide", !(authorMode && editMode));
+      shortcutsGrid.querySelectorAll(".shortcut-card").forEach(card => {
+        card.draggable = authorMode && editMode;
+      });
     }
 
     function showToast(message){
@@ -858,6 +729,11 @@
         (id === "top" ? document.body : document.getElementById(id))?.scrollIntoView({behavior:"smooth", block:"start"});
       }
 
+      const clickedCard = e.target.closest(".shortcut-card");
+      if (clickedCard && authorMode && editMode && !e.target.closest("[data-action]")) {
+        e.preventDefault();
+      }
+
       const actionBtn = e.target.closest("[data-action]");
       if (!actionBtn) return;
       e.preventDefault(); e.stopPropagation();
@@ -878,8 +754,9 @@
     });
 
     $("#toggleEditBtn").addEventListener("click", () => {
+      if (!authorMode) return;
       editMode = !editMode;
-      renderEditMode();
+      render();
       showToast(editMode ? "Düzenleme modu açıldı." : "Düzenleme modu kapandı.");
     });
     $("#addShortcutBtn").addEventListener("click", () => openShortcutDialog());
@@ -893,6 +770,55 @@
       showToast("Yerel taslak sıfırlandı.");
     });
     $("#exportHtmlBtn").addEventListener("click", exportCurrentHtml);
+
+    let draggedShortcutIndex = null;
+
+    shortcutsGrid.addEventListener("dragstart", (e) => {
+      if (!(authorMode && editMode)) return e.preventDefault();
+      const card = e.target.closest(".shortcut-card");
+      if (!card) return;
+      draggedShortcutIndex = Number(card.dataset.index);
+      card.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", String(draggedShortcutIndex));
+    });
+
+    shortcutsGrid.addEventListener("dragover", (e) => {
+      if (!(authorMode && editMode)) return;
+      const card = e.target.closest(".shortcut-card");
+      if (!card) return;
+      e.preventDefault();
+      card.classList.add("drag-over");
+      e.dataTransfer.dropEffect = "move";
+    });
+
+    shortcutsGrid.addEventListener("dragleave", (e) => {
+      const card = e.target.closest(".shortcut-card");
+      if (card) card.classList.remove("drag-over");
+    });
+
+    shortcutsGrid.addEventListener("drop", (e) => {
+      if (!(authorMode && editMode)) return;
+      const card = e.target.closest(".shortcut-card");
+      if (!card) return;
+      e.preventDefault();
+      const from = draggedShortcutIndex;
+      const to = Number(card.dataset.index);
+      cleanupDragState();
+      if (!Number.isInteger(from) || !Number.isInteger(to) || from === to) return;
+      const [moved] = data.shortcuts.splice(from, 1);
+      data.shortcuts.splice(to, 0, moved);
+      saveDraft();
+      render();
+      showToast("Kart sırası güncellendi.");
+    });
+
+    shortcutsGrid.addEventListener("dragend", cleanupDragState);
+
+    function cleanupDragState(){
+      draggedShortcutIndex = null;
+      shortcutsGrid.querySelectorAll(".shortcut-card").forEach(card => card.classList.remove("dragging", "drag-over"));
+    }
 
     function openShortcutDialog(item = {}, index = null){
       openDialog(`
@@ -964,7 +890,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "serdar-start-v1.4-desert-studio.html";
+      a.download = "serdar-start-v1.4.1-desert-studio.html";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -974,6 +900,5 @@
 
     render();
   </script>
-
-
-</body></html>
+</body>
+</html>
